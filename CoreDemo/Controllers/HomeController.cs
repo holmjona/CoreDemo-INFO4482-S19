@@ -12,7 +12,13 @@ namespace CoreDemo.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            if (Request.Query["log"] == "true")
+            {
+                return View("Index");
+            }
+            else {
+                return View("Login");
+            }
         }
 
         public IActionResult About()

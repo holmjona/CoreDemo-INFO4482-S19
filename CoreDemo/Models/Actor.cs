@@ -43,6 +43,12 @@ namespace CoreDemo.Models {
             set { _HairColor = value; }
         }
 
+        private int _SomeValue;
+        [Range(0,100,ErrorMessage ="Value should be between 0 and 50")]
+        public int SomeValue {
+            get { return _SomeValue; }
+            set { _SomeValue = value; }
+        }
 
 
     }

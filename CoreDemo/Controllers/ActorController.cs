@@ -12,29 +12,29 @@ namespace CoreDemo.Controllers
 {
     public class ActorController : Controller
     {
-        private readonly DeleteMeContext _context;
+         //private readonly DeleteMeContext _context;
 
         public ActorController(DeleteMeContext context)
         {
-            _context = context;
+            //_context = context;
         }
 
         // GET: Actor
         public async Task<IActionResult> Index()
         {
-            return View(FakeDAL.Actors);
+            return View(FakeDAL.GetActors());
         }
 
         // GET: Actor/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string color)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var actor = await _context.Actor
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var actor = FakeDAL.GetActor((int)id); //= await _context.Actor
+                //.FirstOrDefaultAsync(m => m.ID == id);
             if (actor == null)
             {
                 return NotFound();
@@ -58,8 +58,9 @@ namespace CoreDemo.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(actor);
-                await _context.SaveChangesAsync();
+                //_context.Add(actor);
+                //await _context.SaveChangesAsync();
+                FakeDAL.Add(actor);
                 return RedirectToAction(nameof(Index));
             }
             return View(actor);
@@ -73,7 +74,7 @@ namespace CoreDemo.Controllers
                 return NotFound();
             }
 
-            var actor = await _context.Actor.FindAsync(id);
+            var actor = FakeDAL.GetActor((int)id); //= await _context.Actor.FindAsync(id);
             if (actor == null)
             {
                 return NotFound();
@@ -86,7 +87,7 @@ namespace CoreDemo.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Title,HairColor")] Actor actor)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Title,HairColor,SomeValue")] Actor actor)
         {
             if (id != actor.ID)
             {
@@ -97,8 +98,9 @@ namespace CoreDemo.Controllers
             {
                 try
                 {
-                    _context.Update(actor);
-                    await _context.SaveChangesAsync();
+                    //_context.Update(actor);
+                    //await _context.SaveChangesAsync();
+                    FakeDAL.Edit(actor);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -115,39 +117,41 @@ namespace CoreDemo.Controllers
             }
             return View(actor);
         }
+        
+      
 
         // GET: Actor/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var actor = await _context.Actor
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (actor == null)
-            {
-                return NotFound();
-            }
+        //    var actor = await _context.Actor
+        //        .FirstOrDefaultAsync(m => m.ID == id);
+        //    if (actor == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(actor);
-        }
+        //    return View(actor);
+        //}
 
-        // POST: Actor/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var actor = await _context.Actor.FindAsync(id);
-            _context.Actor.Remove(actor);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //// POST: Actor/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var actor = await _context.Actor.FindAsync(id);
+        //    _context.Actor.Remove(actor);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool ActorExists(int id)
         {
-            return _context.Actor.Any(e => e.ID == id);
+            return FakeDAL.GetActors().Any(e => e.ID == id);
         }
     }
 }

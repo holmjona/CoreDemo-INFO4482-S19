@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CoreDemo.Models {
     public abstract class DatabaseNamedObject :DatabaseObject {
-        // this is a change.
+
         private string _Name;
 public string Name {
             get { return _Name; }
